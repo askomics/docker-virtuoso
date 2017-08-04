@@ -23,8 +23,7 @@ RUN apk add --update git automake autoconf automake libtool bison flex gawk gper
     make -j $(grep -c '^processor' /proc/cpuinfo) install && \
     ln -s /usr/local/virtuoso-opensource/var/lib/virtuoso/ /var/lib/virtuoso && \
     ln -s /var/lib/virtuoso/db /data && \
-    cd / && rm -rf ${VIRTUOSO_DIR} vos-alpine-build.diff.txt /var/cache/apk/* && \
-    sleep 5s
+    cd / && rm -rf ${VIRTUOSO_DIR} vos-alpine-build.diff.txt /var/cache/apk/*
 
 # Add Virtuoso bin to the PATH
 ENV PATH /usr/local/virtuoso-opensource/bin/:$PATH
