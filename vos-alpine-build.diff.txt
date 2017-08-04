@@ -1,0 +1,14 @@
+diff --git a/libsrc/odbcsdk/include/sqltypes.h b/libsrc/odbcsdk/include/sqltypes.h
+index 3961853..5457e71 100644
+--- a/libsrc/odbcsdk/include/sqltypes.h
++++ b/libsrc/odbcsdk/include/sqltypes.h
+@@ -393,7 +393,8 @@ typedef unsigned short SQLWCHAR;
+       defined(_WCHAR_T)			|| \
+       defined(_WCHAR_T_DEFINED)		|| \
+       defined(_WCHAR_T_DECLARED)        || \
+-      defined(_BSD_WCHAR_T_DEFINED_)
++      defined(_BSD_WCHAR_T_DEFINED_)	|| \
++      defined(__DEFINED_wchar_t)
+ typedef wchar_t SQLWCHAR;
+ #  else
+ #    error Please make sure your system supports the wchar_t type
