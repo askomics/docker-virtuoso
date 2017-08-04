@@ -1,14 +1,23 @@
 # docker-virtuoso
+
+![Docker Build](https://img.shields.io/docker/pulls/xgaia/virtuoso.svg)
+
 Virtuoso dockerized, based on Alpine
 
-The Dockerfile is based on the [tenforce/docker-virtuoso](https://github.com/tenforce/docker-virtuoso) and [jplu/docker-virtuoso](https://github.com/jplu/docker-virtuoso)
+Based on [tenforce/docker-virtuoso](https://github.com/tenforce/docker-virtuoso) and [jplu/docker-virtuoso](https://github.com/jplu/docker-virtuoso)
 
-## Build
+## Pull from DockerHub
+
+    docker pull xgaia/virtuoso
+
+## Or build
 
     # Clone the repo
     git clone https://github.com/xgaia/docker-virtuoso.git
     cd docker-virtuoso
+    # Build image
     docker build -t virtuoso .
+
 
 ## RUN
 
@@ -19,7 +28,3 @@ The Dockerfile is based on the [tenforce/docker-virtuoso](https://github.com/ten
         -e DEFAULT_GRAPH=http://www.example.com/my-graph \
         -v /my/path/to/the/virtuoso/db:/data \
         -d xgaia/virtuoso
-
-## Pull from DockerHub
-
-    docker pull xgaia/virtuoso
