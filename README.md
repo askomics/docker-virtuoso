@@ -4,7 +4,9 @@
 
 Virtuoso dockerized, based on Alpine
 
-Based on [tenforce/docker-virtuoso](https://github.com/tenforce/docker-virtuoso) and [jplu/docker-virtuoso](https://github.com/jplu/docker-virtuoso)
+Based on [tenforce/docker-virtuoso](https://github.com/tenforce/docker-virtuoso) and [jplu/docker-virtuoso](https://github.com/jplu/docker-virtuoso).
+
+Image have the same functionality than [tenforce/docker-virtuoso](https://github.com/tenforce/docker-virtuoso), but it is lighter (347MB instead of 496MB)
 
 ## Pull from DockerHub
 
