@@ -1,0 +1,10 @@
+sudo: required
+services:
+  - docker
+install:
+  - docker build -t virtuoso .
+  - docker run -d -p 8890:8890 --name test_virtuoso virtuoso
+before_script:
+   - sleep 45
+script:
+  - curl -i -g 'http://localhost:8890/sparql?query=SELECT+DISTINCT+?concept+WHERE+{+?s+a+?concept+}+LIMIT+1'
