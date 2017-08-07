@@ -1,6 +1,8 @@
 # docker-virtuoso
 
 ![Docker Build](https://img.shields.io/docker/pulls/xgaia/virtuoso.svg)
+[![Build Status](https://travis-ci.org/xgaia/docker-virtuoso.svg?branch=master)](https://travis-ci.org/xgaia/docker-virtuoso)
+
 
 Virtuoso dockerized, based on Alpine
 
