@@ -1,7 +1,7 @@
 # docker-virtuoso
 
-![Docker Build](https://img.shields.io/docker/pulls/xgaia/virtuoso.svg)
-[![Build Status](https://travis-ci.org/xgaia/docker-virtuoso.svg?branch=master)](https://travis-ci.org/xgaia/docker-virtuoso)
+![Docker Build](https://img.shields.io/docker/pulls/askomics/virtuoso.svg)
+[![Build Status](https://travis-ci.org/askomics/docker-virtuoso.svg?branch=master)](https://travis-ci.org/askomics/docker-virtuoso)
 
 
 Virtuoso dockerized, based on Alpine
@@ -12,12 +12,12 @@ Image have the same functionalities than [tenforce/docker-virtuoso](https://gith
 
 ## Pull from DockerHub
 
-    docker pull xgaia/virtuoso
+    docker pull askomics/virtuoso
 
 ## Or build
 
     # Clone the repo
-    git clone https://github.com/xgaia/docker-virtuoso.git
+    git clone https://github.com/askomics/docker-virtuoso.git
     cd docker-virtuoso
     # Build image
     docker build -t virtuoso .
@@ -31,4 +31,4 @@ Image have the same functionalities than [tenforce/docker-virtuoso](https://gith
         -e SPARQL_UPDATE=true \
         -e DEFAULT_GRAPH=http://www.example.com/my-graph \
         -v /my/path/to/the/virtuoso/db:/data \
-        -d xgaia/virtuoso
+        -d askomics/virtuoso
