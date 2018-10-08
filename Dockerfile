@@ -4,17 +4,14 @@ MAINTAINER Xavier Garnier 'xavier.garnier@irisa.fr'
 # Environment variables
 ENV VIRTUOSO https://github.com/openlink/virtuoso-opensource.git
 ENV VIRTUOSO_DIR /virtuoso-opensource
-ENV VIRTUOSO_VERSION 7.2.4.2
-
-# Copy patch file
-COPY vos-alpine-build.diff.txt /vos-alpine-build.diff.txt
+ENV VIRTUOSO_VERSION 7.2.5.1
 
 # Install prerequisites, Download, Patch, compile and install
 RUN apk add --update git automake autoconf automake libtool bison flex gawk gperf openssl g++ openssl-dev make py-pip && \
     pip install crudini && \
     git clone -b v${VIRTUOSO_VERSION} --single-branch --depth=1 ${VIRTUOSO} ${VIRTUOSO_DIR} && \
+    sed -i 's/maxrows\ \:\= 1024\*1024/maxrows\ \:\=  64\*1024\*1024\-2/' ${VIRTUOSO_DIR}/libsrc/Wi/sparql_io.sql && \
     cd ${VIRTUOSO_DIR} && \
-    cd ${VIRTUOSO_DIR}/libsrc/odbcsdk/include && patch < /vos-alpine-build.diff.txt && cd ${VIRTUOSO_DIR} && \
     ./autogen.sh && \
     CFLAGS="-O2 -m64" && export CFLAGS && \
     ./configure --disable-bpel-vad --enable-conductor-vad --enable-fct-vad --disable-dbpedia-vad --disable-demo-vad --disable-isparql-vad --disable-ods-vad --disable-sparqldemo-vad --disable-syncml-vad --disable-tutorial-vad --program-transform-name="s/isql/isql-v/" && \
