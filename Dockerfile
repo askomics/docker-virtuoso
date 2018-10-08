@@ -6,9 +6,6 @@ ENV VIRTUOSO https://github.com/openlink/virtuoso-opensource.git
 ENV VIRTUOSO_DIR /virtuoso-opensource
 ENV VIRTUOSO_VERSION 7.2.5.1
 
-# Copy patch file
-COPY vos-alpine-build.diff.txt /vos-alpine-build.diff.txt
-
 # Install prerequisites, Download, Patch, compile and install
 RUN apk add --update git automake autoconf automake libtool bison flex gawk gperf openssl g++ openssl-dev make py-pip && \
     pip install crudini && \
