@@ -12,23 +12,29 @@ Image have the same functionalities than [tenforce/docker-virtuoso](https://gith
 
 ## Pull from DockerHub
 
+```bash
     docker pull askomics/virtuoso
+```
 
 ## Or build
 
-    # Clone the repo
-    git clone https://github.com/askomics/docker-virtuoso.git
-    cd docker-virtuoso
-    # Build image
-    docker build -t virtuoso .
+```bash
+# Clone the repo
+git clone https://github.com/askomics/docker-virtuoso.git
+cd docker-virtuoso
+# Build image
+docker build -t virtuoso .
+```
 
 
 ## RUN
 
-    docker run --name my-virtuoso \
-        -p 8890:8890 -p 1111:1111 \
-        -e DBA_PASSWORD=myDbaPassword \
-        -e SPARQL_UPDATE=true \
-        -e DEFAULT_GRAPH=http://www.example.com/my-graph \
-        -v /my/path/to/the/virtuoso/db:/data \
-        -d askomics/virtuoso
+```bash
+docker run --name my-virtuoso \
+    -p 8890:8890 -p 1111:1111 \
+    -e DBA_PASSWORD=myDbaPassword \
+    -e SPARQL_UPDATE=true \
+    -e DEFAULT_GRAPH=http://www.example.com/my-graph \
+    -v /my/path/to/the/virtuoso/db:/data \
+    -d askomics/virtuoso
+```
