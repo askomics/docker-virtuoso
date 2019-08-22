@@ -1,15 +1,15 @@
-FROM alpine
+FROM alpine:3.8
 MAINTAINER Xavier Garnier 'xavier.garnier@irisa.fr'
 
 # Environment variables
-ENV VIRTUOSO https://github.com/openlink/virtuoso-opensource.git
+ENV VIRTUOSO_GIT_URL https://github.com/openlink/virtuoso-opensource.git
 ENV VIRTUOSO_DIR /virtuoso-opensource
-ENV VIRTUOSO_VERSION 7.2.5.1
+ENV VIRTUOSO_GIT_VERSION 7.2.5.1
 
 # Install prerequisites, Download, Patch, compile and install
 RUN apk add --update git automake autoconf automake libtool bison flex gawk gperf openssl g++ openssl-dev make py-pip && \
     pip install crudini && \
-    git clone -b v${VIRTUOSO_VERSION} --single-branch --depth=1 ${VIRTUOSO} ${VIRTUOSO_DIR} && \
+    git clone -b v${VIRTUOSO_GIT_VERSION} --single-branch --depth=1 ${VIRTUOSO_GIT_URL} ${VIRTUOSO_DIR} && \
     sed -i 's/maxrows\ \:\= 1024\*1024/maxrows\ \:\=  64\*1024\*1024\-2/' ${VIRTUOSO_DIR}/libsrc/Wi/sparql_io.sql && \
     cd ${VIRTUOSO_DIR} && \
     ./autogen.sh && \
