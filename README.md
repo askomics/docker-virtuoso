@@ -13,7 +13,7 @@ Image have the same functionalities than [tenforce/docker-virtuoso](https://gith
 ## Pull from DockerHub
 
 ```bash
-    docker pull askomics/virtuoso
+docker pull askomics/virtuoso
 ```
 
 ## Or build
