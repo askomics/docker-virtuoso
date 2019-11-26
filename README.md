@@ -56,9 +56,11 @@ All properties defined in `virtuoso.ini` can be configured via the environment v
 ## Dumping your Virtuoso data as quads
 Enter the Virtuoso docker, open ISQL and execute the `dump_nquads` procedure. The dump will be available in `/my/path/to/the/virtuoso/db/dumps`.
 
-    docker exec -it my-virtuoso sh
-    isql-v -U dba -P $DBA_PASSWORD
-    SQL> dump_nquads ('dumps', 1, 10000000, 1);
+```bash
+docker exec -it my-virtuoso sh
+isql-v -U dba -P $DBA_PASSWORD
+SQL> dump_nquads ('dumps', 1, 10000000, 1);
+```
 
 For more information, see http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtRDFDumpNQuad
 
@@ -66,14 +68,18 @@ For more information, see http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/
 ### Manually
 Make the quad `.nq` files available in `/my/path/to/the/virtuoso/db/dumps`. The quad files might be compressed. Enter the Virtuoso docker, open ISQL, register and run the load.
 
-    docker exec -it my-virtuoso sh
-    isql-v -U dba -P $DBA_PASSWORD
-    SQL> ld_dir('dumps', '*.nq', 'http://foo.bar');
-    SQL> rdf_loader_run();
+```bash
+docker exec -it my-virtuoso sh
+isql-v -U dba -P $DBA_PASSWORD
+SQL> ld_dir('dumps', '*.nq', 'http://foo.bar');
+SQL> rdf_loader_run();
+```
 
 Validate the `ll_state` of the load. If `ll_state` is 2, the load completed.
 
-    select * from DB.DBA.load_list;
+```sql
+select * from DB.DBA.load_list;
+```
 
 For more information, see http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtBulkRDFLoader
 
@@ -83,7 +89,7 @@ By default, any data that is put in the `toLoad` directory in the Virtuoso datab
 ## Creating a backup
 A virtuoso backup can be created by executing the appropriate commands via the ISQL interface.
 
-```
+```bash
 docker exec -i my-virtuoso mkdir -p backups
 docker exec -i my-virtuoso isql-v <<EOF
     exec('checkpoint');
@@ -94,7 +100,7 @@ docker exec -i my-virtuoso isql-v <<EOF
 ## Restoring a backup
 To restore a backup, stop the running container and restore the database using a new container.
 
-```
+```bash
 docker run --rm  -it -v path-to-your-database:/data askomics/virtuoso virtuoso-t +restore-backup backups/backup_ +configfile /data/virtuoso.ini
 ```
 
@@ -102,7 +108,7 @@ The new container will exit once the backup has been restored, you can then rest
 
 It is also possible to restore a backup placed in /data/backups using a environment variable. Using this approach the backup is loaded automatically on startup and it is not required to run a separate container.
 
-```
+```bash
 docker run --name my-virtuoso \
             -p 8890:8890 \
             -p 1111:1111 \
