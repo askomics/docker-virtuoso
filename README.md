@@ -8,7 +8,7 @@ Virtuoso dockerized, based on Alpine
 
 Based on [tenforce/docker-virtuoso](https://github.com/tenforce/docker-virtuoso) and [jplu/docker-virtuoso](https://github.com/jplu/docker-virtuoso).
 
-Image have the same functionalities than [tenforce/docker-virtuoso](https://github.com/tenforce/docker-virtuoso), but it is lighter (347MB instead of 496MB)
+Image have the same functionalities than [tenforce/docker-virtuoso](https://github.com/tenforce/docker-virtuoso), but it is lighter (123MB instead of 496MB)
 
 ## Pull from DockerHub
 
@@ -37,4 +37,78 @@ docker run --name my-virtuoso \
     -e DEFAULT_GRAPH=http://www.example.com/my-graph \
     -v /my/path/to/the/virtuoso/db:/data \
     -d askomics/virtuoso
+```
+
+## Configuration
+
+
+### dba password
+The `dba` password can be set at container start up via the `DBA_PASSWORD` environment variable. If not set, the default `dba` password will be used.
+
+### SPARQL update permission
+The `SPARQL_UPDATE` permission on the SPARQL endpoint can be granted by setting the `SPARQL_UPDATE` environment variable to `true`.
+
+### .ini configuration
+All properties defined in `virtuoso.ini` can be configured via the environment variables. The environment variable should be prefixed with `VIRT_` and have a format like `VIRT_$SECTION_$KEY`. `$SECTION` and `$KEY` are case sensitive. They should be CamelCased as in `virtuoso.ini`. E.g. property `ErrorLogFile` in the `Database` section should be configured as `VIRT_Database_ErrorLogFile=error.log`.
+
+`virtuoso.ini` file will be recreated at each docker run.
+
+## Dumping your Virtuoso data as quads
+Enter the Virtuoso docker, open ISQL and execute the `dump_nquads` procedure. The dump will be available in `/my/path/to/the/virtuoso/db/dumps`.
+
+    docker exec -it my-virtuoso sh
+    isql-v -U dba -P $DBA_PASSWORD
+    SQL> dump_nquads ('dumps', 1, 10000000, 1);
+
+For more information, see http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtRDFDumpNQuad
+
+## Loading quads in Virtuoso
+### Manually
+Make the quad `.nq` files available in `/my/path/to/the/virtuoso/db/dumps`. The quad files might be compressed. Enter the Virtuoso docker, open ISQL, register and run the load.
+
+    docker exec -it my-virtuoso sh
+    isql-v -U dba -P $DBA_PASSWORD
+    SQL> ld_dir('dumps', '*.nq', 'http://foo.bar');
+    SQL> rdf_loader_run();
+
+Validate the `ll_state` of the load. If `ll_state` is 2, the load completed.
+
+    select * from DB.DBA.load_list;
+
+For more information, see http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtBulkRDFLoader
+
+### Automatically
+By default, any data that is put in the `toLoad` directory in the Virtuoso database folder (`/my/path/to/the/virtuoso/db/toLoad`) is automatically loaded into Virtuoso on the first startup of the Docker container. The default graph is set by the DEFAULT_GRAPH environment variable, which defaults to `http://localhost:8890/DAV`.
+
+## Creating a backup
+A virtuoso backup can be created by executing the appropriate commands via the ISQL interface.
+
+```
+docker exec -i my-virtuoso mkdir -p backups
+docker exec -i my-virtuoso isql-v <<EOF
+    exec('checkpoint');
+    backup_context_clear();
+    backup_online('backup_',30000,0,vector('backups'));
+    exit;
+```
+## Restoring a backup
+To restore a backup, stop the running container and restore the database using a new container.
+
+```
+docker run --rm  -it -v path-to-your-database:/data askomics/virtuoso virtuoso-t +restore-backup backups/backup_ +configfile /data/virtuoso.ini
+```
+
+The new container will exit once the backup has been restored, you can then restart the original db container.
+
+It is also possible to restore a backup placed in /data/backups using a environment variable. Using this approach the backup is loaded automatically on startup and it is not required to run a separate container.
+
+```
+docker run --name my-virtuoso \
+            -p 8890:8890 \
+            -p 1111:1111 \
+            -e DBA_PASSWORD=dba \
+            -e SPARQL_UPDATE=true \
+            -e BACKUP_PREFIX=backup_ \_
+            -v path-to-your-database:/data \
+            -d askomics/virtuoso
 ```
