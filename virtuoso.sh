@@ -27,6 +27,9 @@ if [ "$SPARQL_UPDATE" = "true" ]; then echo "GRANT SPARQL_UPDATE to \"SPARQL\";"
 virtuoso-t +wait && isql-v -U dba -P dba < /virtuoso/dump_nquads_procedure.sql && isql-v -U dba -P dba < /sql-query.sql
 kill $(ps ax | egrep '[v]irtuoso-t' | awk '{print $1}')
 
+# Make sure killing is done
+sleep 2
+
 # Load data
 if [ -d "toLoad" ] ;
 then
