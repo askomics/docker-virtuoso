@@ -1,10 +1,10 @@
-FROM alpine:3.8 AS builder
+FROM alpine:3.14 AS builder
 MAINTAINER Xavier Garnier 'xavier.garnier@irisa.fr'
 
 # Environment variables
 ENV VIRTUOSO_GIT_URL https://github.com/openlink/virtuoso-opensource.git
 ENV VIRTUOSO_DIR /virtuoso-opensource
-ENV VIRTUOSO_GIT_VERSION 7.2.5.1
+ENV VIRTUOSO_GIT_VERSION 7.2.6.1
 
 COPY patch.diff /patch.diff
 
@@ -21,7 +21,7 @@ RUN apk add --update git automake autoconf automake libtool bison flex gawk gper
 
 
 # Final image
-FROM alpine:3.8
+FROM alpine:3.14
 ENV PATH /usr/local/virtuoso-opensource/bin/:$PATH
 RUN apk add --no-cache openssl py-pip && \
     pip install crudini && \
