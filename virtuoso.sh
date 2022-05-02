@@ -16,7 +16,7 @@ do
   key=`echo "$setting" | egrep -o "_[^_]+=" | sed 's/[_=]//g'`
   value=`echo "$setting" | egrep -o "=.*$" | sed 's/^=//g'`
   echo "Registering $section[$key] to be $value"
-  crudini --set /data/virtuoso.ini $section $key $value
+  crudini --set /data/virtuoso.ini "$section" "$key" "$value"
 done
 
 # Set dba password
