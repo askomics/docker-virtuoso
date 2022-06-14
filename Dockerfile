@@ -4,12 +4,12 @@ MAINTAINER Xavier Garnier 'xavier.garnier@irisa.fr'
 # Environment variables
 ENV VIRTUOSO_GIT_URL https://github.com/openlink/virtuoso-opensource.git
 ENV VIRTUOSO_DIR /virtuoso-opensource
-ENV VIRTUOSO_GIT_VERSION 7.2.6.1
+ENV VIRTUOSO_GIT_VERSION 7.2.7
 
 COPY patch.diff /patch.diff
 
 # Install prerequisites, Download, Patch, compile and install
-RUN apk add --update git automake autoconf automake libtool bison flex gawk gperf openssl g++ openssl-dev make && \
+RUN apk add --update git automake autoconf automake libtool bison flex gawk gperf openssl g++ openssl-dev make patch && \
     git clone -b v${VIRTUOSO_GIT_VERSION} --single-branch --depth=1 ${VIRTUOSO_GIT_URL} ${VIRTUOSO_DIR} && \
     cd ${VIRTUOSO_DIR} && \
     patch ${VIRTUOSO_DIR}/libsrc/Wi/sparql_io.sql < /patch.diff && \
