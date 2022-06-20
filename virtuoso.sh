@@ -1,6 +1,8 @@
 #!/bin/sh
 cd /data
 
+S3_LOAD_DIR="/tmp/toLoadS3"
+
 # Move clean-logs file
 mv /virtuoso/clean-logs.sh /data/clean-logs.sh 2>/dev/null
 chmod +x /data/clean-logs.sh
@@ -30,15 +32,30 @@ kill $(ps ax | egrep '[v]irtuoso-t' | awk '{print $1}')
 # Make sure killing is done
 sleep 2
 
+
+# Mount S3FS
+# only if $S3_SERVER_HOSTNAME is defined and /toLoad folder does not exists
+if [ "$S3_SERVER_URL" ];
+then
+    mkdir -p $S3_LOAD_DIR
+
+    # connect to S3 bucket
+    echo "$S3_ACCESS_KEY_ID:$S3_SECRET_ACCESS_KEY" > .passwd-s3fs
+    chmod 600 .passwd-s3fs
+    s3fs ${S3_BUCKET_NAME} $S3_LOAD_DIR -o passwd_file=.passwd-s3fs -o url=${S3_SERVER_URL} -o use_path_request_style -o allow_other
+fi
+
+
 # Load data
-if [ -d "toLoad" ] ;
+if [ -d "toLoad" ] || [ -d $S3_LOAD_DIR ] ;
 then
     echo "Start data loading from toLoad folder..."
     pwd="dba"
     graph="http://localhost:8890/DAV"
     if [ "$DBA_PASSWORD" ]; then pwd="$DBA_PASSWORD" ; fi
     if [ "$DEFAULT_GRAPH" ]; then graph="$DEFAULT_GRAPH" ; fi
-    echo "ld_dir_all('toLoad', '*', '$graph');" >> /load_data.sql
+    if [ -d "toLoad" ]; then echo "ld_dir_all('toLoad', '*', '$graph');" >> /load_data.sql ; fi
+    if [ -d $S3_LOAD_DIR ]; then echo "ld_dir_all('$S3_LOAD_DIR', '*', '$graph');" >> /load_data.sql ; fi
     echo "rdf_loader_run();" >> /load_data.sql
     echo "exec('checkpoint');" >> /load_data.sql
     echo "WAIT_FOR_CHILDREN; " >> /load_data.sql
@@ -46,6 +63,13 @@ then
     virtuoso-t +wait && isql-v -U dba -P "$pwd" < /load_data.sql
     kill $(ps ax | egrep '[v]irtuoso-t' | awk '{print $1}')
     echo `date +%Y-%m-%dT%H:%M:%S%:z` > .data_loaded
+fi
+
+# umount S3FS volume
+if [ -d $S3_LOAD_DIR ] ;
+then
+    umount $S3_LOAD_DIR
+    rm -r .passwd-s3fs $S3_LOAD_DIR
 fi
 
 exec virtuoso-t +wait +foreground

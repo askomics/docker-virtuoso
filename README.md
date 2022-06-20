@@ -53,6 +53,28 @@ All properties defined in `virtuoso.ini` can be configured via the environment v
 
 `virtuoso.ini` file will be recreated at each docker run.
 
+### S3 connector
+You can use a S3 bucket to load RDF files on startup. To do so, the S3 bucket
+is mounted as a volume in the file system and loaded the same way the `toLoad`
+folder is.  To configure the S3 bucket connection you need to define
+environment variables when launch.
+
+```bash
+docker run --name my-virtuoso \
+    -p 8890:8890 -p 1111:1111 \
+    -e DBA_PASSWORD=myDbaPassword \
+    -e SPARQL_UPDATE=true \
+    -e DEFAULT_GRAPH=http://www.example.com/my-graph \
+    -e S3_SERVER_URL=http://s3server.dns:9000 \
+    -e S3_ACCESS_KEY_ID=the_s3_access_key \
+    -e S3_SECRET_ACCESS_KEY=ths_s3_secret \
+    -e S3_BUCKET_NAME=myBucket \
+    -d askomics/virtuoso
+```
+The S3 bucket is mounted on `/tmp/toLoadS3` folder.  After the RDF files have
+been imported, then the S3 folder is unmounted.  You can import RDF data from
+the S3 folder and the `toLoad` folder. Both are not exclusives.
+
 ## Dumping your Virtuoso data as quads
 Enter the Virtuoso docker, open ISQL and execute the `dump_nquads` procedure. The dump will be available in `/my/path/to/the/virtuoso/db/dumps`.
 
