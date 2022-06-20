@@ -1,4 +1,4 @@
-FROM alpine:3.14 AS builder
+FROM alpine:3.16 AS builder
 MAINTAINER Xavier Garnier 'xavier.garnier@irisa.fr'
 
 # Environment variables
@@ -21,12 +21,13 @@ RUN apk add --update git automake autoconf automake libtool bison flex gawk gper
 
 
 # Final image
-FROM alpine:3.14
+FROM alpine:3.16
 ENV PATH /usr/local/virtuoso-opensource/bin/:$PATH
-RUN apk add --no-cache openssl py-pip && \
+RUN apk add --no-cache --update openssl py-pip && \
     pip install crudini && \
     mkdir -p /usr/local/virtuoso-opensource/var/lib/virtuoso/db && \
-    ln -s /usr/local/virtuoso-opensource/var/lib/virtuoso/db /data
+    ln -s /usr/local/virtuoso-opensource/var/lib/virtuoso/db /data && \
+    apk add --no-cache --update s3fs-fuse --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/
 
 COPY --from=builder /usr/local/virtuoso-opensource /usr/local/virtuoso-opensource
 COPY virtuoso.ini dump_nquads_procedure.sql clean-logs.sh virtuoso.sh /virtuoso/
