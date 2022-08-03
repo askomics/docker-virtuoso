@@ -8,7 +8,6 @@ Virtuoso dockerized, based on Alpine
 
 Based on [tenforce/docker-virtuoso](https://github.com/tenforce/docker-virtuoso) and [jplu/docker-virtuoso](https://github.com/jplu/docker-virtuoso).
 
-Image have the same functionalities than [tenforce/docker-virtuoso](https://github.com/tenforce/docker-virtuoso), but it is lighter (123MB instead of 496MB)
 
 ## Pull from DockerHub
 
@@ -61,6 +60,7 @@ environment variables when launch.
 
 ```bash
 docker run --name my-virtuoso \
+    --privileged \
     -p 8890:8890 -p 1111:1111 \
     -e DBA_PASSWORD=myDbaPassword \
     -e SPARQL_UPDATE=true \
@@ -74,6 +74,11 @@ docker run --name my-virtuoso \
 The S3 bucket is mounted on `/tmp/toLoadS3` folder.  After the RDF files have
 been imported, then the S3 folder is unmounted.  You can import RDF data from
 the S3 folder and the `toLoad` folder. Both are not exclusives.
+
+Mounting S3 bucket require the `--privileged` option.
+
+### `WAIT_LOADING_DATA`
+If the `WAIT_LOADING_DATA` environment variable is set to `true`, the virtuoso web interface will not be accessible until the data (S3 and /toLoad directory) will be loaded.
 
 ## Dumping your Virtuoso data as quads
 Enter the Virtuoso docker, open ISQL and execute the `dump_nquads` procedure. The dump will be available in `/my/path/to/the/virtuoso/db/dumps`.
@@ -95,6 +100,7 @@ docker exec -it my-virtuoso sh
 isql-v -U dba -P $DBA_PASSWORD
 SQL> ld_dir('dumps', '*.nq', 'http://foo.bar');
 SQL> rdf_loader_run();
+SQL> exec('checkpoint');
 ```
 
 Validate the `ll_state` of the load. If `ll_state` is 2, the load completed.
