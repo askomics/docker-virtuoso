@@ -9,7 +9,7 @@ ENV VIRTUOSO_GIT_VERSION 7.2.7
 COPY patch.diff /patch.diff
 
 # Install prerequisites, Download, Patch, compile and install
-RUN apk add --update git automake autoconf automake libtool bison flex gawk gperf openssl g++ openssl-dev make patch && \
+RUN apk add --update git automake autoconf automake libtool bison flex gawk gperf openssl g++ openssl-dev make patch xz-dev bzip2-dev && \
     git clone -b v${VIRTUOSO_GIT_VERSION} --single-branch --depth=1 ${VIRTUOSO_GIT_URL} ${VIRTUOSO_DIR} && \
     cd ${VIRTUOSO_DIR} && \
     patch ${VIRTUOSO_DIR}/libsrc/Wi/sparql_io.sql < /patch.diff && \
