@@ -89,6 +89,14 @@ isql-v -U dba -P $DBA_PASSWORD
 SQL> dump_nquads ('dumps', 1, 10000000, 1);
 ```
 
+You can also use the `dump_one_graph` procedure if you need to dump a specific graph
+
+```bash
+docker exec -it my-virtuoso sh
+isql-v -U dba -P $DBA_PASSWORD
+SQL> dump_one_graph ('http://daas.openlinksw.com/data#', 'dumps', 1000000000);
+```
+
 For more information, see http://virtuoso.openlinksw.com/dataspace/doc/dav/wiki/Main/VirtRDFDumpNQuad
 
 ## Loading quads in Virtuoso
