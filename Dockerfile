@@ -30,7 +30,7 @@ RUN apk add --no-cache --update openssl py-pip && \
     apk add --no-cache --update s3fs-fuse --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/
 
 COPY --from=builder /usr/local/virtuoso-opensource /usr/local/virtuoso-opensource
-COPY virtuoso.ini dump_nquads_procedure.sql clean-logs.sh virtuoso.sh /virtuoso/
+COPY virtuoso.ini dump_nquads_procedure.sql dump_one_graph_procedure.sql clean-logs.sh virtuoso.sh /virtuoso/
 
 WORKDIR /data
 EXPOSE 8890 1111
