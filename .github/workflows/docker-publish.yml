@@ -9,6 +9,7 @@ on:
 
 jobs:
   docker:
+    if: github.repository == 'askomics/docker-virtuoso'
     environment: docker-registry
     runs-on: ubuntu-latest
     steps:
