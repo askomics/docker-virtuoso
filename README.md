@@ -8,12 +8,20 @@ Virtuoso dockerized, based on Alpine
 
 Based on [tenforce/docker-virtuoso](https://github.com/tenforce/docker-virtuoso) and [jplu/docker-virtuoso](https://github.com/jplu/docker-virtuoso).
 
+Starting from release 7.2.8, due to docker's policy change on organisations, images will be built on the github image repository.
+
 
 ## Pull from DockerHub
 
 ```bash
 docker pull askomics/virtuoso
 ```
+## Pull from github repository (Starting from 7.2.8):
+
+```bash
+docker pull ghcr.io/askomics/virtuoso:master
+```
+
 
 ## Or build
 
