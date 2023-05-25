@@ -52,6 +52,13 @@ docker run --name my-virtuoso \
 ### dba password
 The `dba` password can be set at container start up via the `DBA_PASSWORD` environment variable. If not set, the default `dba` password will be used.
 
+/!\ The dba password will only be updated 'from the default password'. If you already changed the password from the default value, you will need to manually connect to the container, and update it to the new value using the *previous* password, as follows:
+
+```
+isql-v -U dba -P OLDPASSWORD
+user_set_password('dba', NEWPASSWORD');
+```
+
 ### SPARQL update permission
 The `SPARQL_UPDATE` permission on the SPARQL endpoint can be granted by setting the `SPARQL_UPDATE` environment variable to `true`.
 
