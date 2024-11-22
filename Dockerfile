@@ -9,7 +9,6 @@ RUN ./autogen.sh && ./configure && make && make install
 
 # Compile virtuoso in a separate image
 FROM alpine:3.20 AS builder
-MAINTAINER Xavier Garnier 'xavier.garnier@irisa.fr'
 
 # Environment variables
 ENV VIRTUOSO_GIT_URL https://github.com/openlink/virtuoso-opensource.git
