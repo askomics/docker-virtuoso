@@ -14,7 +14,7 @@ MAINTAINER Xavier Garnier 'xavier.garnier@irisa.fr'
 # Environment variables
 ENV VIRTUOSO_GIT_URL https://github.com/openlink/virtuoso-opensource.git
 ENV VIRTUOSO_DIR /virtuoso-opensource
-ENV VIRTUOSO_GIT_VERSION 7.2.9
+ENV VIRTUOSO_GIT_VERSION 7.2.14
 
 COPY patch.diff /patch.diff
 
