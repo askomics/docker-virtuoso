@@ -49,4 +49,4 @@ COPY virtuoso.ini dump_nquads_procedure.sql dump_one_graph_procedure.sql clean-l
 WORKDIR /data
 EXPOSE 8890 1111
 
-CMD sh /virtuoso/virtuoso.sh
+CMD ["/virtuoso/virtuoso.sh"]
