@@ -26,10 +26,10 @@ RUN make -j $(grep -c '^processor' /proc/cpuinfo) install
 
 # Final image
 FROM alpine:3.20
-ENV PATH=/usr/local/virtuoso-opensource/bin/:$PATH
+ENV PATH=/usr/local/virtuoso-opensource/bin/:/root/.local/bin:$PATH
 
-RUN apk add --no-cache --update openssl py-pip s3fs-fuse fuse libcurl libxml2 && \
-    pip install crudini && \
+RUN apk add --no-cache --update openssl s3fs-fuse fuse libcurl libxml2 pipx && \
+    pipx install crudini && \
     mkdir -p /usr/local/virtuoso-opensource/var/lib/virtuoso/db && \
     ln -s /usr/local/virtuoso-opensource/var/lib/virtuoso/db /data
 
