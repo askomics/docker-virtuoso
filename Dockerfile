@@ -11,9 +11,9 @@ RUN ./autogen.sh && ./configure && make && make install
 FROM alpine:3.20 AS builder
 
 # Environment variables
-ENV VIRTUOSO_GIT_URL https://github.com/openlink/virtuoso-opensource.git
-ENV VIRTUOSO_DIR /virtuoso-opensource
-ENV VIRTUOSO_GIT_VERSION 7.2.14
+ENV VIRTUOSO_GIT_URL=https://github.com/openlink/virtuoso-opensource.git
+ENV VIRTUOSO_DIR=/virtuoso-opensource
+ENV VIRTUOSO_GIT_VERSION=7.2.14
 
 COPY patch.diff /patch.diff
 
@@ -35,7 +35,7 @@ RUN make -j $(grep -c '^processor' /proc/cpuinfo) install
 
 # Final image
 FROM alpine:3.20
-ENV PATH /usr/local/virtuoso-opensource/bin/:$PATH
+ENV PATH=/usr/local/virtuoso-opensource/bin/:$PATH
 COPY --from=s3fs-builder  /usr/local/bin/s3fs /usr/local/bin/s3fs
 
 RUN apk add --no-cache --update openssl py-pip fuse libcurl libxml2 && \
