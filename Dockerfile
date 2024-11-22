@@ -10,7 +10,7 @@ COPY patch.diff /patch.diff
 
 # Install prerequisites
 RUN apk add --update git automake autoconf automake libtool bison flex gawk gperf openssl \
-    g++ openssl-dev make patch xz-dev bzip2-dev
+    g++ openssl-dev make patch xz-dev bzip2-dev python3
 # Download sources
 RUN git clone -b v${VIRTUOSO_GIT_VERSION} --single-branch --depth=1 ${VIRTUOSO_GIT_URL} ${VIRTUOSO_DIR}
 WORKDIR ${VIRTUOSO_DIR}
