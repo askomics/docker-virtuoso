@@ -1,5 +1,5 @@
 # Compile s3fs in a separate image
-FROM alpine:3.17 AS s3fs-builder
+FROM alpine:3.20 AS s3fs-builder
 RUN apk add --update fuse fuse-dev automake gcc make libcurl curl-dev libxml2 libxml2-dev \
     openssl openssl-dev autoconf g++
 RUN wget https://github.com/s3fs-fuse/s3fs-fuse/archive/refs/tags/v1.91.zip && \
@@ -8,7 +8,7 @@ WORKDIR s3fs-fuse-1.91
 RUN ./autogen.sh && ./configure && make && make install
 
 # Compile virtuoso in a separate image
-FROM alpine:3.17 AS builder
+FROM alpine:3.20 AS builder
 MAINTAINER Xavier Garnier 'xavier.garnier@irisa.fr'
 
 # Environment variables
@@ -35,7 +35,7 @@ RUN make -j $(grep -c '^processor' /proc/cpuinfo)
 RUN make -j $(grep -c '^processor' /proc/cpuinfo) install
 
 # Final image
-FROM alpine:3.17
+FROM alpine:3.20
 ENV PATH /usr/local/virtuoso-opensource/bin/:$PATH
 COPY --from=s3fs-builder  /usr/local/bin/s3fs /usr/local/bin/s3fs
 
