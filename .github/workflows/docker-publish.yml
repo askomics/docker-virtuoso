@@ -50,6 +50,7 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+          platforms: linux/amd64,linux/arm64/v8
           labels: ${{ steps.meta.outputs.labels }}
           secrets: |
             GIT_AUTH_TOKEN=${{ secrets.DOCKER_REGISTRY_TOKEN }}
