@@ -38,6 +38,7 @@ if [ "$SPARQL_UPDATE" = "true" ]; then echo 'GRANT execute on "DB.DBA.L_O_LOOK_N
 virtuoso-t +configfile ${CONFIG_FILE} +wait
 isql-v -U dba -P dba < /virtuoso/dump_nquads_procedure.sql
 isql-v -U dba -P dba < /virtuoso/dump_one_graph_procedure.sql
+isql-v -U dba -P dba < /virtuoso/dump_nt_graph_procedure.sql
 isql-v -U dba -P dba < /sql-query.sql
 kill $(ps ax | egrep '[v]irtuoso-t' | awk '{print $1}')
 
